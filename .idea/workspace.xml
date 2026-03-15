@@ -4,10 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="76610b43-1666-44b3-9e71-7bf08b667da9" name="Changes" comment="代码初始化">
-      <change afterPath="$PROJECT_DIR$/ls-dev-api/src/main/java/com/ls/dev/api/package-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ls-dev-app/src/main/java/com/ls/dev/app/package-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ls-dev-trigger/src/main/java/com/ls/dev/trigger/package-info.java" afterDir="false" />
+    <list default="true" id="275eece6-052d-4ea0-bb42-94818481028b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ls-dev-api/src/main/java/com/ls/dev/api/IAiService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls-dev-app/src/main/java/com/ls/dev/app/Application.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls-dev-app/src/main/java/com/ls/dev/app/config/OllamaConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls-dev-app/src/main/java/com/ls/dev/app/config/RedisClientConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls-dev-app/src/main/java/com/ls/dev/app/config/RedisClientConfigProperties.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls-dev-app/src/main/resources/application-dev.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls-dev-app/src/main/resources/application-prod.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls-dev-app/src/main/resources/application-test.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls-dev-app/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls-dev-app/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ls-dev-trigger/src/main/java/com/ls/dev/trigger/http/OllamaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/dev-ops/api/curl.sh" beforeDir="false" afterPath="$PROJECT_DIR$/docs/dev-ops/api/curl.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ls-dev-app/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ls-dev-app/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ls-dev-trigger/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ls-dev-trigger/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,13 +31,26 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="package-info" />
+        <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;tangtang917&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/tangtang917/ai-rag.git&quot;,
+    &quot;accountId&quot;: &quot;da54f2c7-b84b-4a2f-94ab-f23de9255d2c&quot;
+  }
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -38,9 +65,10 @@
     <urls />
   </component>
   <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 3
 }</component>
-  <component name="ProjectId" id="3AsTkhwR9Phh7zvw2mnKUKMJkOU" />
+  <component name="ProjectId" id="3AwBJ9XjAYVEiYIsEVtFqchoaFf" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -51,14 +79,48 @@
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.Application.executor": "Run",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "onboarding.tips.debug.path": "D:/documents/JavaProjects/knowledge/ai-rag/src/main/java/com/ls/Main.java",
+    "last_opened_file_path": "D:/documents/JavaProjects/knowledge/ai-rag/ls-dev-app/src/main/java/com/ls/dev/app/config",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "MavenSettings",
     "to.speed.mode.migration.done": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\documents\JavaProjects\knowledge\ai-rag\ls-dev-app\src\main\java\com\ls\dev\app\config" />
+      <recent name="D:\documents\JavaProjects\knowledge\ai-rag\ls-dev-app\src\main\resources" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.ls.dev.app.config" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
+      <module name="ls-dev-app" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ls.dev.app.Application" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ls.dev.app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.Application" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -68,23 +130,23 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="76610b43-1666-44b3-9e71-7bf08b667da9" name="Changes" comment="" />
-      <created>1773380425591</created>
+      <changelist id="275eece6-052d-4ea0-bb42-94818481028b" name="Changes" comment="" />
+      <created>1773493678328</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1773380425591</updated>
+      <updated>1773493678328</updated>
     </task>
     <servers />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ls/Main.java</url>
-          <line>13</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
