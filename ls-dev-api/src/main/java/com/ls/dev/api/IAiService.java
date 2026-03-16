@@ -1,7 +1,7 @@
 package com.ls.dev.api;
 
 import org.springframework.ai.chat.ChatResponse;
-import reactor.core.publisher.Flux;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface IAiService {
 
@@ -9,5 +9,5 @@ public interface IAiService {
     ChatResponse generate(String model, String message);
 
     // 流式
-    Flux<ChatResponse> generateStream(String model, String message);
+    SseEmitter generateStream(String model, String message);
 }

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chat Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          boxShadow: {
+            soft: "0 24px 60px rgba(15, 23, 42, 0.12)"
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-slate-100 bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.18),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] text-slate-800">
+  <div class="mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-6 sm:px-6 lg:px-8">
+    <div class="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
+      <aside class="rounded-[28px] border border-white/70 bg-white/85 p-6 shadow-soft backdrop-blur">
+        <div class="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium tracking-[0.24em] text-slate-500">
+          AI CHAT DEMO
+        </div>
+        <h1 class="mt-4 text-2xl font-semibold tracking-tight text-slate-900">Spring AI 对话演示</h1>
+        <p class="mt-2 text-sm leading-7 text-slate-500">
+          页面由 Spring Boot 直接提供，短文本直连流式，长文本自动切到会话流式。
+        </p>
+
+        <div class="mt-6 space-y-4">
+          <label class="block">
+            <span class="mb-2 block text-sm font-medium text-slate-600">模型名称</span>
+            <input
+              id="modelInput"
+              type="text"
+              value="deepseek-r1:1.5b"
+              class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+            />
+          </label>
+        </div>
+
+        <div class="mt-6 rounded-3xl border border-slate-200 bg-slate-50 p-4">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-sm font-medium text-slate-600">传输模式</span>
+            <span id="transportBadge" class="rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-500 ring-1 ring-slate-200">
+              自动判断
+            </span>
+          </div>
+          <p class="mt-3 text-sm leading-6 text-slate-500">
+            基于 URL 长度自动切换，避免长文本被 GET 查询串截断。
+          </p>
+        </div>
+
+        <div class="mt-4 rounded-3xl border border-emerald-200 bg-emerald-50 p-4">
+          <div class="text-sm font-medium text-emerald-800">访问地址</div>
+          <p class="mt-2 text-sm leading-6 text-emerald-700">
+            启动项目后直接访问 `/ai-case-01/index.html` 即可演示。
+          </p>
+        </div>
+      </aside>
+
+      <main class="overflow-hidden rounded-[32px] border border-white/70 bg-white/90 shadow-soft backdrop-blur">
+        <div class="border-b border-slate-100 bg-slate-950 px-6 py-5 text-white sm:px-8">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 class="text-xl font-semibold tracking-tight">AI 对话助手</h2>
+              <p class="mt-1 text-sm text-slate-300">流式渲染 `result.output.content`，收到 `STOP` 后结束。</p>
+            </div>
+            <div id="statusText" class="inline-flex w-fit rounded-full bg-white/10 px-3 py-1 text-sm text-slate-200">
+              等待输入
+            </div>
+          </div>
+        </div>
+
+        <div id="chatList" class="h-[58vh] space-y-4 overflow-y-auto bg-white px-6 py-6 sm:px-8">
+          <div id="emptyState" class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-5 py-10 text-center text-sm leading-7 text-slate-400">
+            输入内容后点击发送，演示页会自动选择最合适的流式方式。
+          </div>
+        </div>
+
+        <div class="border-t border-slate-100 bg-white px-6 py-5 sm:px-8">
+          <div class="rounded-[28px] border border-slate-200 bg-slate-50 p-4">
+            <textarea
+              id="messageInput"
+              rows="5"
+              placeholder="请输入你的问题，Shift + Enter 换行，Enter 发送"
+              class="w-full resize-none bg-transparent text-sm leading-7 outline-none placeholder:text-slate-400"
+            ></textarea>
+
+            <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div class="text-xs leading-6 text-slate-400">
+                当前页面默认请求同源接口 `/api/v1/ollama/*`。
+              </div>
+              <div class="flex items-center gap-3">
+                <button
+                  id="clearBtn"
+                  type="button"
+                  class="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-600 transition hover:bg-slate-100"
+                >
+                  清空
+                </button>
+                <button
+                  id="stopBtn"
+                  type="button"
+                  disabled
+                  class="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  停止
+                </button>
+                <button
+                  id="sendBtn"
+                  type="button"
+                  class="rounded-2xl bg-slate-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  发送
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
