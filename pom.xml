@@ -106,6 +106,7 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <parameters>true</parameters>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
