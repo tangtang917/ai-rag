@@ -1,4 +1,4 @@
-﻿package com.ls.dev.test;
+package com.ls.dev.test;
 
 import com.alibaba.fastjson.JSON;
 import com.ls.dev.app.Application;
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @SpringBootTest(classes = Application.class, webEnvironment = WebEnvironment.NONE)
 public class RAGTest {
 
-    private static final String KNOWLEDGE_NAME = "\u77e5\u8bc6\u5e93\u540d\u79f0";
+    private static final String KNOWLEDGE_NAME = "知识库名称";
 
     // 负责调用聊天模型，最终根据检索到的知识生成回答。
     @Resource
@@ -71,13 +71,13 @@ public class RAGTest {
         //    这一步会把文本转成向量，再把文本、标签和向量一起保存到 PostgreSQL。
         pgVectorStore.accept(documentList);
 
-        log.info("\u4e0a\u4f20\u5b8c\u6210");
+        log.info("上传完成");
     }
 
     @Test
     public void chat() {
         // 用户问题。RAG 的关键不是直接问模型，而是先去知识库里找相关资料。
-        String message = "\u738b\u5927\u9524\u54ea\u4e00\u5e74\u51fa\u751f\u7684";
+        String message = "王大瓜，哪年出生";
 
         // 系统提示词模板：把检索到的资料填充到 {documents}，再交给模型参考作答。
         String systemPrompt = """
@@ -115,6 +115,6 @@ public class RAGTest {
                 new Prompt(messages, OllamaOptions.create().withModel("deepseek-r1:1.5b"))
         );
 
-        log.info("\u6d4b\u8bd5\u7ed3\u679c:{}", JSON.toJSONString(chatResponse));
+        log.info("测试结果:{}", JSON.toJSONString(chatResponse));
     }
 }
