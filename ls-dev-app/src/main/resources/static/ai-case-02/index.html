@@ -1,0 +1,181 @@
+<!--
+  File: ai-case-02/index.html
+  Purpose: Render the ai-case-02 enterprise workspace with a chat area and a knowledge-base upload area.
+  Flow: Load runtime config -> render dual-workspace layout -> let app.js bind chat and upload behaviors.
+  Created: 2026-03-18
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业知识协同工作台</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero__eyebrow">AI KNOWLEDGE OPERATIONS</div>
+      <div class="hero__grid">
+        <div>
+          <h1 class="hero__title">企业知识协同工作台</h1>
+          <p class="hero__summary">
+            面向业务团队提供统一的 AI 对话与知识资料录入入口。左侧工作区保留原有流式对话能力，右侧工作区用于知识标签维护与资料上传。
+          </p>
+        </div>
+        <div class="hero__panel">
+          <div class="hero__panel-label">访问路径</div>
+          <div class="hero__panel-value">/ai-case-02/index.html</div>
+          <p class="hero__panel-text">
+            页面仅开放对话、标签查询、标签录入和资料上传能力，不展示标签维护、文件管理或知识问答入口。
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <main class="workspace-grid">
+      <section class="workspace-card workspace-card--chat" aria-labelledby="chatWorkspaceTitle">
+        <div class="workspace-card__header">
+          <div>
+            <div class="workspace-card__eyebrow">AI 对话工作区</div>
+            <h2 id="chatWorkspaceTitle" class="workspace-card__title">智能问答席位</h2>
+            <p class="workspace-card__description">
+              沿用现有流式输出机制，根据消息长度自动选择直接流式或会话流式链路。
+            </p>
+          </div>
+          <div class="status-stack">
+            <span id="transportBadge" class="badge badge--idle">自动判断</span>
+            <span id="chatStatusText" class="status-chip">等待输入</span>
+          </div>
+        </div>
+
+        <div class="control-panel control-panel--compact">
+          <label class="field">
+            <span class="field__label">模型名称</span>
+            <input id="modelInput" class="field__input" type="text" autocomplete="off" />
+          </label>
+          <div class="hint-panel">
+            <div class="hint-panel__title">调用边界</div>
+            <p class="hint-panel__text">当前页面通过同源接口访问 `/api/v1/ollama/*`，不在浏览器侧保存对话内容。</p>
+          </div>
+        </div>
+
+        <div id="chatList" class="chat-list" aria-live="polite">
+          <div id="chatEmptyState" class="empty-state">
+            输入业务问题后发送，系统会自动选择合适的流式输出方式，并将结果持续渲染到对话区。
+          </div>
+        </div>
+
+        <div class="composer">
+          <label class="field field--stacked">
+            <span class="field__label">消息内容</span>
+            <textarea
+              id="messageInput"
+              class="field__textarea"
+              rows="6"
+              placeholder="请输入待咨询的问题，Enter 发送，Shift + Enter 换行。"
+            ></textarea>
+          </label>
+          <div class="composer__actions">
+            <button id="clearChatBtn" class="button button--secondary" type="button">清空对话</button>
+            <button id="stopChatBtn" class="button button--secondary" type="button" disabled>停止生成</button>
+            <button id="sendChatBtn" class="button button--primary" type="button">发送消息</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace-card workspace-card--knowledge" aria-labelledby="knowledgeWorkspaceTitle">
+        <div class="workspace-card__header">
+          <div>
+            <div class="workspace-card__eyebrow">知识库管理工作区</div>
+            <h2 id="knowledgeWorkspaceTitle" class="workspace-card__title">知识资料录入</h2>
+            <p class="workspace-card__description">
+              支持查询既有标签、补录新标签并上传一个或多个资料文件。上传成功后自动刷新标签列表。
+            </p>
+          </div>
+          <div class="status-stack">
+            <span id="tagSyncBadge" class="badge badge--idle">标签待同步</span>
+            <span id="uploadStatusText" class="status-chip">等待提交</span>
+          </div>
+        </div>
+
+        <div class="control-panel">
+          <div class="field">
+            <span class="field__label">标签来源</span>
+            <div class="segmented-control" role="radiogroup" aria-label="知识标签录入方式">
+              <label class="segmented-control__item">
+                <input type="radio" name="tagMode" value="existing" checked />
+                <span>选择已有标签</span>
+              </label>
+              <label class="segmented-control__item">
+                <input type="radio" name="tagMode" value="new" />
+                <span>录入新标签</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="tagSelectField" class="field">
+            <div class="field__label-row">
+              <span class="field__label">标签列表</span>
+              <button id="refreshTagsBtn" class="text-button" type="button">刷新标签</button>
+            </div>
+            <select id="tagSelect" class="field__input">
+              <option value="">请选择知识标签</option>
+            </select>
+            <p class="field__hint">初始化时会自动查询标签接口；若拉取失败，将保留上传区域继续可用。</p>
+          </div>
+
+          <label id="tagInputField" class="field field--hidden">
+            <span class="field__label">新标签名称</span>
+            <input
+              id="newTagInput"
+              class="field__input"
+              type="text"
+              maxlength="100"
+              autocomplete="off"
+              placeholder="请输入新的业务标签名称"
+            />
+            <span class="field__hint">最终提交时只会形成一个有效的 `ragTag` 值。</span>
+          </label>
+
+          <label class="field">
+            <span class="field__label">上传文件</span>
+            <input id="fileInput" class="field__file" type="file" multiple />
+            <span class="field__hint">可同时选择多个文件，上传前将展示完整文件名列表。</span>
+          </label>
+
+          <div class="field">
+            <span class="field__label">已选文件</span>
+            <div id="fileEmptyState" class="empty-state empty-state--compact">尚未选择文件。</div>
+            <ul id="fileList" class="file-list" aria-live="polite"></ul>
+          </div>
+        </div>
+
+        <div class="notice-panel">
+          <div class="notice-panel__title">能力边界说明</div>
+          <p class="notice-panel__text">
+            当前页面仅提供标签查询、标签录入和文件上传，不提供标签删除、标签编辑、文件管理或知识检索问答入口。
+          </p>
+        </div>
+
+        <div class="feedback-area">
+          <div id="tagFeedback" class="feedback feedback--neutral" role="status">标签列表尚未加载。</div>
+          <div id="uploadFeedback" class="feedback feedback--neutral" role="status">请选择标签和文件后提交上传。</div>
+        </div>
+
+        <div class="composer composer--knowledge">
+          <button id="submitUploadBtn" class="button button--primary button--wide" type="button">提交上传</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <span>企业知识协同工作台</span>
+      <span id="footerYear"></span>
+    </footer>
+  </div>
+
+  <script src="./configs/runtime-config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
