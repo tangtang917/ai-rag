@@ -220,22 +220,41 @@ button {
   color: var(--ink-secondary);
 }
 
+.badge--busy {
+  background: #edf2ff;
+  color: #2f5ea1;
+}
+
 .badge--direct,
 .feedback--success {
   background: var(--success-bg);
   color: var(--success-ink);
 }
 
-.badge--session,
-.feedback--warning {
+.badge--session {
   background: #eaf2ff;
   color: #285f96;
 }
 
+.badge--success {
+  background: var(--success-bg);
+  color: var(--success-ink);
+}
+
+.badge--error {
+  background: var(--danger-bg);
+  color: var(--danger-ink);
+}
+
 .badge--warn,
-.feedback--error {
+.feedback--warning {
   background: var(--warning-bg);
   color: var(--warning-ink);
+}
+
+.feedback--error {
+  background: var(--danger-bg);
+  color: var(--danger-ink);
 }
 
 .status-chip {
@@ -326,6 +345,13 @@ button {
 .button:focus-visible {
   border-color: rgba(18, 52, 92, 0.35);
   box-shadow: 0 0 0 4px rgba(18, 52, 92, 0.08);
+}
+
+.field__input:disabled,
+.field__file:disabled {
+  background: #f0f3f7;
+  color: var(--ink-muted);
+  cursor: not-allowed;
 }
 
 .field__hint {
