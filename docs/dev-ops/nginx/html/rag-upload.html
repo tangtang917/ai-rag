@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<!--
+  File: rag-upload.html
+  Purpose: Knowledge document upload page for manual RAG data ingestion.
+  Flow: Select existing/new tag -> pick files -> submit upload request in later integration stage.
+  Updated: 2026-03-20
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>上传知识库 - 智能知识工作台</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="brand">
+        <h1>知识库上传</h1>
+        <p>文档入库管理</p>
+      </div>
+      <div class="quick-nav">
+        <details>
+          <summary>页面切换</summary>
+          <div class="menu">
+            <a href="./index.html">返回对话中心</a>
+            <a href="./code-upload.html">上传代码库</a>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="page-links">
+      <a href="./index.html">对话中心</a>
+      <a class="active" href="./rag-upload.html">上传知识库</a>
+      <a href="./code-upload.html">上传代码库</a>
+    </div>
+
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">文档入库表单</h2>
+      </div>
+      <div class="card-body">
+        <div class="form-row">
+          <div>
+            <label for="existingTag">知识库标签</label>
+            <select id="existingTag">
+              <option>knowledge-project-a</option>
+              <option>knowledge-project-b</option>
+              <option>knowledge-project-c</option>
+            </select>
+          </div>
+          <div>
+            <label for="newTag">新建标签（可选）</label>
+            <input id="newTag" type="text" placeholder="请输入新标签名称" />
+          </div>
+          <div>
+            <label for="files">文件选择</label>
+            <input id="files" type="file" multiple />
+          </div>
+        </div>
+
+        <ul class="files">
+          <li>已选择文件将在这里显示</li>
+        </ul>
+
+        <div class="status-strip">状态：待提交</div>
+        <div style="margin-top: 12px;">
+          <button class="btn primary" type="button">开始上传</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

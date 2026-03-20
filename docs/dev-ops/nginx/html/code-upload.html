@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<!--
+  File: code-upload.html
+  Purpose: Code repository upload page for source indexing preparation.
+  Flow: Input repository credentials -> submit analysis request in later integration stage.
+  Updated: 2026-03-20
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>上传代码库 - 智能知识工作台</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="brand">
+        <h1>代码库上传</h1>
+        <p>仓库分析入库</p>
+      </div>
+      <div class="quick-nav">
+        <details>
+          <summary>页面切换</summary>
+          <div class="menu">
+            <a href="./index.html">返回对话中心</a>
+            <a href="./rag-upload.html">上传知识库</a>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="page-links">
+      <a href="./index.html">对话中心</a>
+      <a href="./rag-upload.html">上传知识库</a>
+      <a class="active" href="./code-upload.html">上传代码库</a>
+    </div>
+
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">代码仓库入库表单</h2>
+      </div>
+      <div class="card-body">
+        <div class="form-row">
+          <div>
+            <label for="repoUrl">仓库地址（repoUrl）</label>
+            <input id="repoUrl" type="url" placeholder="https://github.com/org/repo.git" />
+          </div>
+          <div>
+            <label for="userName">用户名（userName）</label>
+            <input id="userName" type="text" placeholder="请输入仓库用户名" />
+          </div>
+          <div>
+            <label for="token">访问令牌（token）</label>
+            <input id="token" type="password" placeholder="请输入访问令牌" />
+          </div>
+        </div>
+
+        <div class="status-strip">状态：待提交</div>
+        <div style="margin-top: 12px;">
+          <button class="btn primary" type="button">开始分析入库</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

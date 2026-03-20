@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<!--
+  File: index.html
+  Purpose: Welcome page for the RAG workspace with chat, knowledge selection and upload navigation.
+  Flow: Load fixed enterprise UI -> restore sessions -> stream chat responses -> navigate to upload pages.
+  Updated: 2026-03-20
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Knowledge Workspace</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="brand">
+        <h1>智能知识工作台</h1>
+        <p>对话与知识库管理</p>
+      </div>
+      <div class="quick-nav">
+        <details>
+          <summary>上传入口</summary>
+          <div class="menu">
+            <a href="./rag-upload.html" data-upload-entry="rag">上传知识库</a>
+            <a href="./code-upload.html" data-upload-entry="code">上传代码库</a>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="layout-chat">
+      <aside class="card session-panel">
+        <div class="card-header">
+          <div class="session-header">
+            <h2 class="card-title">会话管理</h2>
+            <div class="session-actions">
+              <button id="restoreBtn" class="btn ghost" type="button">刷新恢复</button>
+              <button id="newChatBtn" class="btn primary" type="button">新对话</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="sessionList" class="session-list"></div>
+        </div>
+      </aside>
+
+      <section class="card chat-card">
+        <div class="card-header">
+          <h2 class="card-title">对话中心</h2>
+        </div>
+        <div class="card-body">
+          <div class="form-row">
+            <div>
+              <label for="channelSelect">模型通道</label>
+              <select id="channelSelect">
+                <option value="ollama">Ollama</option>
+                <option value="openai">OpenAI</option>
+              </select>
+            </div>
+            <div>
+              <label for="modelSelect">模型选择</label>
+              <select id="modelSelect"></select>
+            </div>
+            <div>
+              <label for="knowledgeSelect">知识库选择</label>
+              <select id="knowledgeSelect"></select>
+            </div>
+          </div>
+
+          <div id="chatBoard" class="chat-board"></div>
+
+          <div class="chat-input">
+            <textarea id="messageInput" placeholder="请输入问题，Shift + Enter 换行，Enter 发送。"></textarea>
+            <button id="sendBtn" class="btn primary" type="button">发送</button>
+            <button id="stopBtn" class="btn ghost" type="button" disabled>停止</button>
+          </div>
+
+          <div id="statusStrip" class="status-strip">状态：就绪</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="./assets/app.js"></script>
+</body>
+</html>
