@@ -1,23 +1,24 @@
-package com.ls.dev.trigger.http.cotroller;
+package com.ls.dev.test;
 
-import com.ls.dev.api.IRAGService;
-import com.ls.dev.api.response.Response;
+import com.ls.dev.app.Application;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.redisson.api.RList;
-import org.redisson.api.RedissonClient;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.ollama.OllamaChatClient;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.PgVectorStore;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.PathResource;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,10 +27,10 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 
 @Slf4j
-@RestController
-@CrossOrigin("*")
-@RequestMapping("api/v1/rag")
-public class RAGController implements IRAGService {
+@RunWith(SpringRunner.class)
+@ActiveProfiles("dev")
+@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+public class JGitTest {
 
     // 负责调用聊天模型，最终根据检索到的知识生成回答。
     @Resource
@@ -47,58 +48,29 @@ public class RAGController implements IRAGService {
     @Resource
     private PgVectorStore pgVectorStore;
 
-    @Resource
-    private RedissonClient redissonClient;
+    @Test
+    public void test() throws Exception {
 
-    @GetMapping("query_rag_tag_list")
-    @Override
-    public Response<List<String>> queryRagTagList() {
-        RList<String> elements = redissonClient.getList("ragTag");
-        return Response.<List<String>>builder()
-                .code("0000")
-                .msg("调用成功")
-                .data(elements)
-                .build();
-    }
+        // 这部分替换为你的
+        String repoURL = "https://github.com/tangtang917/sky-take-out.git";
 
-    @PostMapping(value = "file/upload", headers = "content-type=multipart/form-data")
-    @Override
-    public Response<String> uploadFile(@RequestParam String ragTag, @RequestParam List<MultipartFile> files) {
-        log.info("上传知识库开始:{}",ragTag);
-        for (MultipartFile file : files){
-            TikaDocumentReader tikaDocumentReader = new TikaDocumentReader(file.getResource());
-            List<Document> documents = tikaDocumentReader.get();
-            List<Document> documentList = tokenTextSplitter.apply(documents);
-
-            documentList.forEach(doc -> doc.getMetadata().put("knowledge", ragTag));
-
-            pgVectorStore.accept(documentList);
-
-            RList<String> elements = redissonClient.getList("ragTag");
-            if(!elements.contains(ragTag)){
-                elements.add(ragTag);
-            }
-        }
-        log.info("上传知识库完成:{}",ragTag);
-        return Response.<String>builder().code("0000").msg("调用成功").build();
-    }
-
-    @PostMapping("analyze_git_repositiry")
-    @Override
-    public Response<String> analyzeGitRepositiry(@RequestParam String repoUrl, @RequestParam String userName, @RequestParam String token) throws Exception{
-        String localPath = "./git_cloned-repo";
-        String repoProjectName = extractProjectName(repoUrl);
+        String localPath = "./cloned-repo";
         log.info("克隆路径：" + new File(localPath).getAbsolutePath());
 
         FileUtils.deleteDirectory(new File(localPath));
 
         Git git = Git.cloneRepository()
-                .setURI(repoProjectName)
+                .setURI(repoURL)
                 .setDirectory(new File(localPath))
-                .setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, token))
+//                .setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
                 .call();
 
-        Files.walkFileTree(Paths.get(localPath), new SimpleFileVisitor<>() {
+        git.close();
+    }
+
+    @Test
+    public void test_file() throws IOException {
+        Files.walkFileTree(Paths.get("./cloned-repo"), new SimpleFileVisitor<>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 
@@ -133,24 +105,5 @@ public class RAGController implements IRAGService {
                 return FileVisitResult.CONTINUE;
             }
         });
-
-        FileUtils.deleteDirectory(new File(localPath));
-
-        RList<String> elements = redissonClient.getList("ragTag");
-        if(!elements.contains(repoProjectName)){
-            elements.add(repoProjectName);
-        }
-
-        git.close();
-
-        log.info("便利解析路径，上传完成：{}", repoUrl);
-
-        return Response.<String>builder().code("0000").msg("调用成功").build();
-    }
-
-    private String extractProjectName(String repoUrl) {
-        String[] parts = repoUrl.split("/");
-        String projectNameWithGit = parts[parts.length - 1];
-        return projectNameWithGit.replace(".git", "");
     }
 }
