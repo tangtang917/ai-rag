@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
 <!--
   File: rag-upload.html
-  Purpose: Knowledge document upload page for manual RAG data ingestion.
-  Flow: Select existing/new tag -> pick files -> submit upload request in later integration stage.
-  Updated: 2026-03-20
+  Purpose: Knowledge document upload page bound to backend rag upload API.
+  Flow: Load available rag tags -> resolve upload tag (new tag first) -> post multipart files -> refresh tag list.
+  Updated: 2026-03-23
 -->
 <html lang="zh-CN">
 <head>
@@ -44,15 +44,11 @@
         <div class="form-row">
           <div>
             <label for="existingTag">知识库标签</label>
-            <select id="existingTag">
-              <option>knowledge-project-a</option>
-              <option>knowledge-project-b</option>
-              <option>knowledge-project-c</option>
-            </select>
+            <select id="existingTag"></select>
           </div>
           <div>
-            <label for="newTag">新建标签（可选）</label>
-            <input id="newTag" type="text" placeholder="请输入新标签名称" />
+            <label for="newTag">新建标签（可选，优先生效）</label>
+            <input id="newTag" type="text" placeholder="请输入新标签名称（填写后将优先使用）" />
           </div>
           <div>
             <label for="files">文件选择</label>
@@ -60,16 +56,19 @@
           </div>
         </div>
 
-        <ul class="files">
-          <li>已选择文件将在这里显示</li>
+        <ul id="selectedFiles" class="files">
+          <li>尚未选择文件</li>
         </ul>
 
-        <div class="status-strip">状态：待提交</div>
+        <div id="uploadStatus" class="status-strip">状态：待提交</div>
         <div style="margin-top: 12px;">
-          <button class="btn primary" type="button">开始上传</button>
+          <button id="uploadBtn" class="btn primary" type="button">开始上传</button>
         </div>
       </div>
     </section>
   </div>
+
+  <script src="./assets/configs/runtime-config.js?v=20260323_1"></script>
+  <script src="./assets/rag-upload.js?v=20260323_1"></script>
 </body>
 </html>

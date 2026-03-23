@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
 <!--
   File: code-upload.html
-  Purpose: Code repository upload page for source indexing preparation.
-  Flow: Input repository credentials -> submit analysis request in later integration stage.
-  Updated: 2026-03-20
+  Purpose: Code repository ingestion page bound to backend analyzeGitRepositiry API.
+  Flow: Validate repo credentials -> call analyze_git_repositiry -> display processing status and result.
+  Updated: 2026-03-23
 -->
 <html lang="zh-CN">
 <head>
@@ -56,12 +56,15 @@
           </div>
         </div>
 
-        <div class="status-strip">状态：待提交</div>
+        <div id="analyzeStatus" class="status-strip">状态：待提交</div>
         <div style="margin-top: 12px;">
-          <button class="btn primary" type="button">开始分析入库</button>
+          <button id="analyzeBtn" class="btn primary" type="button">开始分析入库</button>
         </div>
       </div>
     </section>
   </div>
+
+  <script src="./assets/configs/runtime-config.js?v=20260323_2"></script>
+  <script src="./assets/code-upload.js?v=20260323_1"></script>
 </body>
 </html>

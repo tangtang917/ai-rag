@@ -28,7 +28,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/v1/rag")
+@RequestMapping("api/v1/rag/")
 public class RAGController implements IRAGService {
 
     // 负责调用聊天模型，最终根据检索到的知识生成回答。
@@ -93,7 +93,7 @@ public class RAGController implements IRAGService {
         FileUtils.deleteDirectory(new File(localPath));
 
         Git git = Git.cloneRepository()
-                .setURI(repoProjectName)
+                .setURI(repoUrl)
                 .setDirectory(new File(localPath))
                 .setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, token))
                 .call();
@@ -122,7 +122,7 @@ public class RAGController implements IRAGService {
 
 //                    documents.forEach(doc -> doc.getMetadata().put("knowledge", "sky-take-out"));
                     documentSplitterList.forEach(doc -> {
-                        doc.getMetadata().put("knowledge", "sky-take-out");
+                        doc.getMetadata().put("knowledge", repoProjectName);
                     });
 
                     pgVectorStore.accept(documentSplitterList);
