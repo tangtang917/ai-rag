@@ -1,8 +1,8 @@
-/*
+﻿/*
   File: assets/style.css
-  Purpose: Enterprise visual system for the RAG workspace pages.
-  Flow: Define theme tokens -> structure layout containers -> style controls/messages -> keep responsive behavior.
-  Updated: 2026-03-20
+  Purpose: Enterprise visual system for login-first workspace and upload pages.
+  Flow: Define shared tokens -> style login entry and workspace panels -> keep desktop/mobile responsive.
+  Updated: 2026-03-23
 */
 :root {
   --bg: #f4f6f8;
@@ -43,6 +43,33 @@ body {
   margin: 22px auto;
 }
 
+.hidden {
+  display: none !important;
+}
+
+.auth-shell {
+  display: grid;
+  gap: 14px;
+}
+
+.login-card {
+  width: min(560px, 100%);
+}
+
+.login-form {
+  display: grid;
+  gap: 12px;
+}
+
+.login-form .btn {
+  min-height: 42px;
+}
+
+.workspace-shell {
+  display: grid;
+  gap: 14px;
+}
+
 .topbar {
   display: flex;
   align-items: center;
@@ -61,6 +88,24 @@ body {
   margin: 6px 0 0;
   color: var(--text-sub);
   font-size: 13px;
+}
+
+.workspace-ops {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.identity-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  color: #2b3f5d;
+  border-radius: 8px;
+  padding: 0 10px;
+  font-size: 12px;
 }
 
 .quick-nav {
@@ -447,6 +492,12 @@ textarea:focus {
 
   .chat-input {
     grid-template-columns: 1fr;
+  }
+
+  .workspace-ops {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 
   .btn {

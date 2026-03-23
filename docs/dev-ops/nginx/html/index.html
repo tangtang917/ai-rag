@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
 <!--
   File: index.html
-  Purpose: Welcome page for the RAG workspace with chat, knowledge selection and upload navigation.
-  Flow: Load fixed enterprise UI -> restore sessions -> stream chat responses -> navigate to upload pages.
-  Updated: 2026-03-20
+  Purpose: Login-first entry page for the intelligent knowledge workspace.
+  Flow: Show login entry -> validate lightweight credentials -> unlock workspace chat and upload navigation.
+  Updated: 2026-03-23
 -->
 <html lang="zh-CN">
 <head>
@@ -14,75 +14,113 @@
 </head>
 <body>
   <div class="page">
-    <div class="topbar">
-      <div class="brand">
-        <h1>智能知识工作台</h1>
-        <p>对话与知识库管理</p>
+    <section id="loginView" class="auth-shell">
+      <div class="topbar">
+        <div class="brand">
+          <h1>智能知识工作台</h1>
+          <p>统一登录入口与业务工作台</p>
+        </div>
       </div>
-      <div class="quick-nav">
-        <details>
-          <summary>上传入口</summary>
-          <div class="menu">
-            <a href="./rag-upload.html" data-upload-entry="rag">上传知识库</a>
-            <a href="./code-upload.html" data-upload-entry="code">上传代码库</a>
-          </div>
-        </details>
-      </div>
-    </div>
 
-    <div class="layout-chat">
-      <aside class="card session-panel">
+      <section class="card login-card">
         <div class="card-header">
-          <div class="session-header">
-            <h2 class="card-title">会话管理</h2>
-            <div class="session-actions">
-              <button id="restoreBtn" class="btn ghost" type="button">刷新恢复</button>
-              <button id="newChatBtn" class="btn primary" type="button">新对话</button>
-            </div>
-          </div>
+          <h2 class="card-title">系统登录</h2>
+          <p class="card-sub">登录后进入会话管理、知识库选择与 RAG 流式对话工作台。</p>
         </div>
         <div class="card-body">
-          <div id="sessionList" class="session-list"></div>
-        </div>
-      </aside>
-
-      <section class="card chat-card">
-        <div class="card-header">
-          <h2 class="card-title">对话中心</h2>
-        </div>
-        <div class="card-body">
-          <div class="form-row">
+          <form id="loginForm" class="login-form" novalidate>
             <div>
-              <label for="channelSelect">模型通道</label>
-              <select id="channelSelect">
-                <option value="ollama">Ollama</option>
-                <option value="openai">OpenAI</option>
-              </select>
+              <label for="loginAccount">账号</label>
+              <input id="loginAccount" type="text" autocomplete="username" placeholder="请输入内部账号" />
             </div>
             <div>
-              <label for="modelSelect">模型选择</label>
-              <select id="modelSelect"></select>
+              <label for="loginPassword">密码</label>
+              <input id="loginPassword" type="password" autocomplete="current-password" placeholder="请输入登录密码" />
             </div>
-            <div>
-              <label for="knowledgeSelect">知识库选择</label>
-              <select id="knowledgeSelect"></select>
-            </div>
-          </div>
-
-          <div id="chatBoard" class="chat-board"></div>
-
-          <div class="chat-input">
-            <textarea id="messageInput" placeholder="请输入问题，Shift + Enter 换行，Enter 发送。"></textarea>
-            <button id="sendBtn" class="btn primary" type="button">发送</button>
-            <button id="stopBtn" class="btn ghost" type="button" disabled>停止</button>
-          </div>
-
-          <div id="statusStrip" class="status-strip">状态：就绪</div>
+            <button id="loginBtn" class="btn primary" type="submit">登录进入工作台</button>
+          </form>
+          <div id="loginStatus" class="status-strip">状态：请先登录后使用业务功能</div>
+          <p class="footer-note">当前为轻量登录态门禁，仅用于流程规范，不替代正式生产鉴权体系。</p>
         </div>
       </section>
-    </div>
+    </section>
+
+    <section id="workspaceView" class="workspace-shell hidden" aria-hidden="true">
+      <div class="topbar">
+        <div class="brand">
+          <h1>智能知识工作台</h1>
+          <p>对话与知识库管理</p>
+        </div>
+        <div class="workspace-ops">
+          <span id="loginIdentity" class="identity-badge">未登录</span>
+          <button id="logoutBtn" class="btn ghost" type="button">退出登录</button>
+          <div class="quick-nav">
+            <details>
+              <summary>上传入口</summary>
+              <div class="menu">
+                <a href="./rag-upload.html" data-upload-entry="rag">上传知识库</a>
+                <a href="./code-upload.html" data-upload-entry="code">上传代码库</a>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-chat">
+        <aside class="card session-panel">
+          <div class="card-header">
+            <div class="session-header">
+              <h2 class="card-title">会话管理</h2>
+              <div class="session-actions">
+                <button id="restoreBtn" class="btn ghost" type="button">刷新恢复</button>
+                <button id="newChatBtn" class="btn primary" type="button">新对话</button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="sessionList" class="session-list"></div>
+          </div>
+        </aside>
+
+        <section class="card chat-card">
+          <div class="card-header">
+            <h2 class="card-title">对话中心</h2>
+          </div>
+          <div class="card-body">
+            <div class="form-row">
+              <div>
+                <label for="channelSelect">模型通道</label>
+                <select id="channelSelect">
+                  <option value="ollama">Ollama</option>
+                  <option value="openai">OpenAI</option>
+                </select>
+              </div>
+              <div>
+                <label for="modelSelect">模型选择</label>
+                <select id="modelSelect"></select>
+              </div>
+              <div>
+                <label for="knowledgeSelect">知识库选择</label>
+                <select id="knowledgeSelect"></select>
+              </div>
+            </div>
+
+            <div id="chatBoard" class="chat-board"></div>
+
+            <div class="chat-input">
+              <textarea id="messageInput" placeholder="请输入问题，Shift + Enter 换行，Enter 发送。"></textarea>
+              <button id="sendBtn" class="btn primary" type="button">发送</button>
+              <button id="stopBtn" class="btn ghost" type="button" disabled>停止</button>
+            </div>
+
+            <div id="statusStrip" class="status-strip">状态：就绪</div>
+          </div>
+        </section>
+      </div>
+    </section>
   </div>
 
+  <script src="./assets/configs/runtime-config.js"></script>
   <script src="./assets/app.js"></script>
 </body>
 </html>
