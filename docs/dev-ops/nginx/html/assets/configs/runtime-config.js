@@ -5,7 +5,7 @@
   Updated: 2026-03-23 (local direct-connect mode, rag upload and repo analyze endpoints enabled)
 */
 (function (global) {
-  var apiBaseUrl = "http://127.0.0.1:8090";
+  var apiBaseUrl = "http://111.229.28.45:8090";
 
   var config = {
     storageKeys: {
